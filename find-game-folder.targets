@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- import developer's custom path (if any) -->
+    <Import Condition="$(OS) == 'Windows_NT' AND Exists('$(USERPROFILE)\raft.targets')" Project="$(USERPROFILE)\raft.targets"/>
+
+    <!-- find game path -->
+    <Choose>
+        <When Condition="$(OS) == 'Windows_NT'">
+            <PropertyGroup>
+                <!-- registry path -->
+                <GamePath Condition="!Exists('$(GamePath)')">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 648800', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</GamePath>
+
+                <!-- derive from Steam library path -->
+                <_SteamLibraryPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</_SteamLibraryPath>
+                <GamePath Condition="!Exists('$(GamePath)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)\steamapps\common\Raft</GamePath>
+
+                <!-- Steam path -->
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\Steam\steamapps\common\Raft</GamePath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+</Project>

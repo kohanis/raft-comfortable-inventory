@@ -1,0 +1,120 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <RootNamespace>kohanis.ComfortableInventory</RootNamespace>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+
+    <Import Project="../find-game-folder.targets"/>
+
+    <PropertyGroup>
+        <RaftModLoaderBinaries>$(AppData)/RaftModLoader/binaries</RaftModLoaderBinaries>
+        <GameManagedBinaries>$(GamePath)/Raft_Data/Managed</GameManagedBinaries>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp-firstpass.dll" HintPath="$(GameManagedBinaries)/Assembly-CSharp-firstpass.dll" Private="false"/>
+        <Reference Include="Assembly-CSharp.dll" HintPath="$(GameManagedBinaries)/Assembly-CSharp.dll" Private="false"/>
+        <Reference Include="Autodesk.Fbx.dll" HintPath="$(GameManagedBinaries)/Autodesk.Fbx.dll" Private="false"/>
+        <Reference Include="com.unity.multiplayer-hlapi.Runtime.dll" HintPath="$(GameManagedBinaries)/com.unity.multiplayer-hlapi.Runtime.dll" Private="false"/>
+        <Reference Include="MeshExtension.dll" HintPath="$(GameManagedBinaries)/MeshExtension.dll" Private="false"/>
+        <Reference Include="Mono.Posix.dll" HintPath="$(GameManagedBinaries)/Mono.Posix.dll" Private="false"/>
+        <Reference Include="Mono.Security.dll" HintPath="$(GameManagedBinaries)/Mono.Security.dll" Private="false"/>
+        <Reference Include="mscorlib.dll" HintPath="$(GameManagedBinaries)/mscorlib.dll" Private="false"/>
+        <Reference Include="NavMeshComponents.dll" HintPath="$(GameManagedBinaries)/NavMeshComponents.dll" Private="false"/>
+        <Reference Include="PathCreator.dll" HintPath="$(GameManagedBinaries)/PathCreator.dll" Private="false"/>
+        <Reference Include="Sirenix.OdinInspector.Attributes.dll" HintPath="$(GameManagedBinaries)/Sirenix.OdinInspector.Attributes.dll" Private="false"/>
+        <Reference Include="System.Configuration.dll" HintPath="$(GameManagedBinaries)/System.Configuration.dll" Private="false"/>
+        <Reference Include="System.Core.dll" HintPath="$(GameManagedBinaries)/System.Core.dll" Private="false"/>
+        <Reference Include="System.dll" HintPath="$(GameManagedBinaries)/System.dll" Private="false"/>
+        <Reference Include="System.Security.dll" HintPath="$(GameManagedBinaries)/System.Security.dll" Private="false"/>
+        <Reference Include="System.Xml.dll" HintPath="$(GameManagedBinaries)/System.Xml.dll" Private="false"/>
+        <Reference Include="Tayx.Graphy.dll" HintPath="$(GameManagedBinaries)/Tayx.Graphy.dll" Private="false"/>
+        <Reference Include="Unity.Analytics.DataPrivacy.dll" HintPath="$(GameManagedBinaries)/Unity.Analytics.DataPrivacy.dll" Private="false"/>
+        <Reference Include="Unity.Analytics.StandardEvents.dll" HintPath="$(GameManagedBinaries)/Unity.Analytics.StandardEvents.dll" Private="false"/>
+        <Reference Include="Unity.Analytics.Tracker.dll" HintPath="$(GameManagedBinaries)/Unity.Analytics.Tracker.dll" Private="false"/>
+        <Reference Include="Unity.Formats.Fbx.Runtime.dll" HintPath="$(GameManagedBinaries)/Unity.Formats.Fbx.Runtime.dll" Private="false"/>
+        <Reference Include="Unity.Recorder.dll" HintPath="$(GameManagedBinaries)/Unity.Recorder.dll" Private="false"/>
+        <Reference Include="Unity.RemoteConfig.dll" HintPath="$(GameManagedBinaries)/Unity.RemoteConfig.dll" Private="false"/>
+        <Reference Include="Unity.TextMeshPro.dll" HintPath="$(GameManagedBinaries)/Unity.TextMeshPro.dll" Private="false"/>
+        <Reference Include="Unity.Timeline.dll" HintPath="$(GameManagedBinaries)/Unity.Timeline.dll" Private="false"/>
+        <Reference Include="UnityEngine.AccessibilityModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AccessibilityModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.AIModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AIModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.AndroidJNIModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AndroidJNIModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.AnimationModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AnimationModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ARModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ARModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.AssetBundleModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AssetBundleModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.AudioModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.AudioModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ClothModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ClothModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ClusterInputModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ClusterInputModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ClusterRendererModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ClusterRendererModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.CoreModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.CoreModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.CrashReportingModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.CrashReportingModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.DirectorModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.DirectorModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.dll" HintPath="$(GameManagedBinaries)/UnityEngine.dll" Private="false"/>
+        <Reference Include="UnityEngine.DSPGraphModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.DSPGraphModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.GameCenterModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.GameCenterModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.GridModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.GridModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.HotReloadModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.HotReloadModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ImageConversionModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ImageConversionModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.IMGUIModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.IMGUIModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.InputLegacyModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.InputLegacyModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.InputModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.InputModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.JSONSerializeModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.JSONSerializeModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.LocalizationModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.LocalizationModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ParticleSystemModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ParticleSystemModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.PerformanceReportingModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.PerformanceReportingModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.Physics2DModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.Physics2DModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.PhysicsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.PhysicsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.ProfilerModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ProfilerModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.Purchasing.dll" HintPath="$(GameManagedBinaries)/UnityEngine.Purchasing.dll" Private="false"/>
+        <Reference Include="UnityEngine.ScreenCaptureModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.ScreenCaptureModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.SharedInternalsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SharedInternalsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.SpatialTracking.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SpatialTracking.dll" Private="false"/>
+        <Reference Include="UnityEngine.SpriteMaskModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SpriteMaskModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.SpriteShapeModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SpriteShapeModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.StreamingModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.StreamingModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.SubstanceModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SubstanceModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.SubsystemsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.SubsystemsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TerrainModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TerrainModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TerrainPhysicsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TerrainPhysicsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TextCoreModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TextCoreModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TextRenderingModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TextRenderingModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TilemapModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TilemapModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.TLSModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.TLSModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UI.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UI.dll" Private="false"/>
+        <Reference Include="UnityEngine.UIElementsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UIElementsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UIModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UIModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UmbraModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UmbraModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UNETModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UNETModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityAnalyticsModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityAnalyticsModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityConnectModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityConnectModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityTestProtocolModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityTestProtocolModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityWebRequestAssetBundleModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityWebRequestAudioModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityWebRequestAudioModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityWebRequestModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityWebRequestModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityWebRequestTextureModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityWebRequestTextureModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UnityWebRequestWWWModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UnityWebRequestWWWModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.VehiclesModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.VehiclesModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.VFXModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.VFXModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.VideoModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.VideoModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.VRModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.VRModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.WindModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.WindModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.XR.LegacyInputHelpers.dll" HintPath="$(GameManagedBinaries)/UnityEngine.XR.LegacyInputHelpers.dll" Private="false"/>
+        <Reference Include="UnityEngine.XRModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.XRModule.dll" Private="false"/>
+        <Reference Include="0Harmony.dll" HintPath="$(RaftModLoaderBinaries)/0Harmony.dll" Private="false"/>
+        <Reference Include="coremod.dll" HintPath="$(RaftModLoaderBinaries)/coremod.dll" Private="false"/>
+        <Reference Include="HMLCoreLibrary.dll" HintPath="$(RaftModLoaderBinaries)/HMLCoreLibrary.dll" Private="false"/>
+        <Reference Include="SharpZipLib.dll" HintPath="$(RaftModLoaderBinaries)/SharpZipLib.dll" Private="false"/>
+        <Reference Include="System.ValueTuple.dll" HintPath="$(RaftModLoaderBinaries)/System.ValueTuple.dll" Private="false"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PostBuildEvent>
+            call cd $(SolutionDir)
+            call powershell -File build.ps1 $(MSBuildProjectDirectory)
+        </PostBuildEvent>
+    </PropertyGroup>
+</Project>

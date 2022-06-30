@@ -1,0 +1,14 @@
+{
+  "name": "Comfortable Inventory",
+  "author": "Kohanis",
+  "description": "Some tweaks for more comfortable interaction with inventory",
+  "version": "1.0.1",
+  "license": "GNU AGPLv3",
+  "icon": "icon.png",
+  "banner": "banner.jpg",
+  "gameVersion": "1.0",
+  "requiredByAllPlayers": false,
+  "updateUrl": "https://raftmodding.com/api/v1/mods/comfortable-inventory/version.txt",
+  "isModPermanent": false,
+  "excludedFiles": []
+}
