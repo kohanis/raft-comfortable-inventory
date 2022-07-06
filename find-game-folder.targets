@@ -1,21 +1,49 @@
+<!-- Based on https://github.com/Pathoschild/SMAPI/blob/develop/build/find-game-folder.targets -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- import developer's custom path (if any) -->
-    <Import Condition="$(OS) == 'Windows_NT' AND Exists('$(USERPROFILE)\raft.targets')" Project="$(USERPROFILE)\raft.targets"/>
+    <Import Condition="$(OS) != 'Windows_NT' AND Exists('$(HOME)\.msbuild_game_targets\$(GameId).targets')" Project="$(HOME)\.msbuild_game_targets\$(GameId).targets" />
+    <Import Condition="$(OS) == 'Windows_NT' AND Exists('$(USERPROFILE)\.msbuild_game_targets\$(GameId).targets')" Project="$(USERPROFILE)\.msbuild_game_targets\$(GameId).targets" />
 
     <!-- find game path -->
     <Choose>
+        <When Condition="$(OS) == 'Unix' OR $(OS) == 'OSX'">
+            <PropertyGroup>
+                <!-- Linux -->
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/GOG Games/$(GameDirName)/game</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/.steam/steam/steamapps/common/$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/.local/share/Steam/steamapps/common/$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/$(GameDirName)</GamePath>
+
+                <!-- macOS (may be 'Unix' or 'OSX') -->
+                <GamePath Condition="!Exists('$(GamePath)')">/Applications/$(GameDirName).app/Contents/MacOS</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">$(HOME)/Library/Application Support/Steam/steamapps/common/$(GameDirName)/Contents/MacOS</GamePath>
+            </PropertyGroup>
+        </When>
         <When Condition="$(OS) == 'Windows_NT'">
             <PropertyGroup>
-                <!-- registry path -->
-                <GamePath Condition="!Exists('$(GamePath)')">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 648800', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</GamePath>
+                <!-- registry paths -->
+                <GamePath Condition="!Exists('$(GamePath)') AND $(GameGogId) != ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\GOG.com\Games\$(GameGogId)', 'PATH', null, RegistryView.Registry32))</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)') AND $(GameSteamId) != ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App $(GameSteamId)', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</GamePath>
 
                 <!-- derive from Steam library path -->
                 <_SteamLibraryPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</_SteamLibraryPath>
-                <GamePath Condition="!Exists('$(GamePath)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)\steamapps\common\Raft</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)\steamapps\common\$(GameDirName)</GamePath>
 
-                <!-- Steam path -->
-                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\Steam\steamapps\common\Raft</GamePath>
+                <!-- GOG paths -->
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files\GalaxyClient\Games\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files\GOG Galaxy\Games\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files\GOG Games\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\GalaxyClient\Games\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\GOG Galaxy\Games\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\GOG Games\$(GameDirName)</GamePath>
+
+                <!-- Steam paths -->
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files\Steam\steamapps\common\$(GameDirName)</GamePath>
+                <GamePath Condition="!Exists('$(GamePath)')">C:\Program Files (x86)\Steam\steamapps\common\$(GameDirName)</GamePath>
             </PropertyGroup>
         </When>
     </Choose>
+    <PropertyGroup>
+        <GamePath Condition="!Exists('$(GamePath)')"/>
+    </PropertyGroup>
 </Project>
