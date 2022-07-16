@@ -19,6 +19,16 @@ namespace kohanis.ComfortableInventory.Patches
 
             var inventory = PatchHelpers.Slot_inventory_Ref(__instance);
 
+            if (MyInput.GetButton("Drop"))
+            {
+                var playerInventory = inventory as PlayerInventory ?? inventory.secondInventory as PlayerInventory;
+                if (playerInventory != null)
+                {
+                    playerInventory.DropItem(__instance);
+                    return;
+                }
+            }
+
             if (Input.GetKey(KeyCode.LeftShift))
                 inventory.ShiftMoveItem(__instance, eventData);
         }
