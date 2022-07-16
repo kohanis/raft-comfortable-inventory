@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
         <RootNamespace>kohanis.ComfortableInventory</RootNamespace>
         <LangVersion>7.3</LangVersion>
@@ -11,7 +11,7 @@
         <GameDirName>Raft</GameDirName>
         <GameSteamId>648800</GameSteamId>
     </PropertyGroup>
-    <Import Project="../find-game-folder.targets" />
+    <Import Project="../find-game-folder.targets"/>
 
     <PropertyGroup>
         <GameManagedBinaries>$(GamePath)/Raft_Data/Managed</GameManagedBinaries>
@@ -20,13 +20,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp.dll" HintPath="$(GameManagedBinaries)/Assembly-CSharp.dll" Private="false" />
-        <Reference Include="UnityEngine.CoreModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.CoreModule.dll" Private="false" />
-        <Reference Include="UnityEngine.InputLegacyModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.InputLegacyModule.dll" Private="false" />
-        <Reference Include="UnityEngine.UI.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UI.dll" Private="false" />
-        <Reference Include="0Harmony.dll" HintPath="$(RaftModLoaderBinaries)/0Harmony.dll" Private="false" />
-        <Reference Include="coremod.dll" HintPath="$(RaftModLoaderBinaries)/coremod.dll" Private="false" />
-        <Reference Include="HMLCoreLibrary.dll" HintPath="$(RaftModLoaderBinaries)/HMLCoreLibrary.dll" Private="false" />
+        <Reference Include="Assembly-CSharp.dll" HintPath="$(GameManagedBinaries)/Assembly-CSharp.dll" Private="false"/>
+        <Reference Include="UnityEngine.CoreModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.CoreModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.InputLegacyModule.dll" HintPath="$(GameManagedBinaries)/UnityEngine.InputLegacyModule.dll" Private="false"/>
+        <Reference Include="UnityEngine.UI.dll" HintPath="$(GameManagedBinaries)/UnityEngine.UI.dll" Private="false"/>
+        <Reference Include="0Harmony.dll" HintPath="$(RaftModLoaderBinaries)/0Harmony.dll" Private="false"/>
+        <Reference Include="coremod.dll" HintPath="$(RaftModLoaderBinaries)/coremod.dll" Private="false"/>
+        <Reference Include="HMLCoreLibrary.dll" HintPath="$(RaftModLoaderBinaries)/HMLCoreLibrary.dll" Private="false"/>
     </ItemGroup>
 
     <PropertyGroup>

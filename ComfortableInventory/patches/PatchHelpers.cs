@@ -1,47 +1,43 @@
 ﻿using HarmonyLib;
 
+// ReSharper disable InconsistentNaming
+
 namespace kohanis.ComfortableInventory.Patches
 {
     internal static class PatchHelpers
     {
-        private static readonly AccessTools.FieldRef<Slot, Inventory> SlotInventoryGetter =
+        internal static readonly AccessTools.FieldRef<Slot, Inventory> Slot_inventory_Ref =
             AccessTools.FieldRefAccess<Slot, Inventory>(AccessTools.Field(typeof(Slot), "inventory"));
 
-        private static readonly FastInvokeHandler MoveSlotToEmptyInvoker =
+        // TODO: Move to AccessTools.MethodDelegate with Harmony 2.0.2
+        internal static readonly FastInvokeHandler PlayerInventory_MoveSlotToEmpty =
             MethodInvoker.GetHandler(AccessTools.Method(typeof(PlayerInventory), "MoveSlotToEmpty"));
 
-        private static readonly FastInvokeHandler SwitchSlotsInvoker =
+        internal static readonly FastInvokeHandler PlayerInventory_SwitchSlots =
             MethodInvoker.GetHandler(AccessTools.Method(typeof(PlayerInventory), "SwitchSlots"));
 
-        // Faster, but needs Harmony 2.0.2
+        internal static readonly FastInvokeHandler PlayerInventory_StackSlots =
+            MethodInvoker.GetHandler(AccessTools.Method(typeof(PlayerInventory), "StackSlots"));
 
-        // public delegate void MoveSlotToEmpty(Inventory inventory, Slot fromSlot, Slot toSlot, int amount);
-        // public delegate void SwitchSlots(Inventory inventory, Slot fromSlot, Slot toSlot);
-        //
-        // private static readonly MoveSlotToEmpty MoveSlotToEmptyDelegate =
-        //     AccessTools.MethodDelegate<MoveSlotToEmpty>(AccessTools.Method(typeof(PlayerInventory), "MoveSlotToEmpty"));
-        // private static readonly SwitchSlots SwitchSlotsDelegate =
-        //     AccessTools.MethodDelegate<SwitchSlots>(AccessTools.Method(typeof(PlayerInventory), "SwitchSlots"));
 
         internal static bool IsSelectedHotbarSlot(Slot slot)
         {
-            var inventory = SlotInventoryGetter(slot) as PlayerInventory;
-            return inventory != null && slot == inventory.GetSelectedHotbarSlot();
+            return Slot_inventory_Ref(slot) is PlayerInventory inventory && inventory.hotbar.IsSelectedHotSlot(slot);
         }
 
-        internal static void RefillSlotIfNeeded(Slot slot, int originalUniqueIndex,
+        internal static void ReplenishSlotIfNeeded(Slot slot, int originalUniqueIndex,
             PlayerInventory playerInventory = null)
         {
             if (slot.itemInstance?.UniqueIndex == originalUniqueIndex)
                 return;
 
-            var inventory = playerInventory ? playerInventory : SlotInventoryGetter(slot) as PlayerInventory;
+            var inventory = playerInventory ? playerInventory : Slot_inventory_Ref(slot) as PlayerInventory;
             if (inventory is null)
                 return;
 
             foreach (var localSlot in inventory.allSlots)
             {
-                // last condition will never be triggered in current implementation, but let it be
+                // last condition will never be triggered with second, but let it be
                 if (localSlot.IsEmpty || localSlot.slotType == SlotType.Hotbar || localSlot == slot)
                     continue;
 
@@ -50,9 +46,10 @@ namespace kohanis.ComfortableInventory.Patches
                     continue;
 
                 if (slot.IsEmpty)
-                    MoveSlotToEmptyInvoker(inventory, new object[] { localSlot, slot, slotItemInstance.Amount });
+                    PlayerInventory_MoveSlotToEmpty(inventory,
+                        new object[] { localSlot, slot, slotItemInstance.Amount });
                 else
-                    SwitchSlotsInvoker(inventory, new object[] { localSlot, slot });
+                    PlayerInventory_SwitchSlots(inventory, new object[] { localSlot, slot });
                 break;
             }
         }

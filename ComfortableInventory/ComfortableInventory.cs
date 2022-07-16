@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using HarmonyLib;
-using kohanis.ComfortableInventory.Patches;
 using UnityEngine;
 
 namespace kohanis.ComfortableInventory
@@ -8,26 +7,27 @@ namespace kohanis.ComfortableInventory
     public class ComfortableInventory : Mod
     {
         private const string HarmonyID = "kohanis.ComfortableInventory";
-        private const string LogPrefix = "<color=teal>Comfortable Inventory</color>";
-        private Harmony harmony;
+        private const string LogPrefix = "[Comfortable Inventory] ";
+        private Harmony _harmony;
 
         public void Start()
         {
-            harmony = new Harmony(HarmonyID);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-            Slot_RemoveItem_MultiPatch.Patch(harmony);
+            _harmony = new Harmony(HarmonyID);
+            _harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            Log("mod has been loaded!");
+            Log("Mod has been loaded!");
         }
 
         public void OnModUnload()
         {
-            harmony.UnpatchAll(HarmonyID);
+            _harmony.UnpatchAll(HarmonyID);
 
-            Log("mod has been unloaded!");
+            Log("Mod has been unloaded!");
         }
 
-        internal static void Log(string message) =>
+        internal static void Log(string message)
+        {
             Debug.Log($"{LogPrefix}: {message}");
+        }
     }
 }

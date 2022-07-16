@@ -6,25 +6,21 @@ using UnityEngine.EventSystems;
 
 namespace kohanis.ComfortableInventory.Patches
 {
+    /// <summary>
+    ///     "Shift-click" or "Drop" hovered <see cref="Slot" />s while holding LMB and corresponding button(s)
+    /// </summary>
     [HarmonyPatch(typeof(Slot), "OnPointerEnter")]
     internal class Slot_OnPointerEnter_Patch
     {
         private static void Prefix(Slot __instance, PointerEventData eventData)
         {
-            if (!Input.GetKey(KeyCode.LeftShift) || __instance.IsEmpty ||
-                !eventData.eligibleForClick) // It should be when you hold LMB. I hope
+            if (__instance.IsEmpty || !eventData.eligibleForClick)
                 return;
 
-            var itemInstance = __instance.itemInstance;
-            var stackable = itemInstance.settings_Inventory.Stackable;
+            var inventory = PatchHelpers.Slot_inventory_Ref(__instance);
 
-            // Calling Slot.OnPointerDown until all items inside have moved or there is no room left
-            int amount;
-            do
-            {
-                amount = itemInstance.Amount;
-                __instance.OnPointerDown(eventData);
-            } while (stackable && amount != itemInstance.Amount);
+            if (Input.GetKey(KeyCode.LeftShift))
+                inventory.ShiftMoveItem(__instance, eventData);
         }
     }
 }
