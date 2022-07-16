@@ -2,7 +2,7 @@
 
 namespace kohanis.ComfortableInventory.Patches
 {
-    internal static class Helpers
+    internal static class PatchHelpers
     {
         private static readonly AccessTools.FieldRef<Slot, Inventory> SlotInventoryGetter =
             AccessTools.FieldRefAccess<Slot, Inventory>(AccessTools.Field(typeof(Slot), "inventory"));

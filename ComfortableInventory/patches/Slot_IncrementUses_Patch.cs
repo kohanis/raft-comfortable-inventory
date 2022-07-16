@@ -11,7 +11,7 @@ namespace kohanis.ComfortableInventory.Patches
         {
             __state = -1;
 
-            if (amountOfUsesToAdd >= 0 || __instance.IsEmpty || !Helpers.IsSelectedHotbarSlot(__instance))
+            if (amountOfUsesToAdd >= 0 || __instance.IsEmpty || !PatchHelpers.IsSelectedHotbarSlot(__instance))
                 return;
 
 
@@ -23,7 +23,7 @@ namespace kohanis.ComfortableInventory.Patches
             if (__state == -1)
                 return;
 
-            Helpers.RefillSlotIfNeeded(__instance, __state);
+            PatchHelpers.RefillSlotIfNeeded(__instance, __state);
         }
     }
 }

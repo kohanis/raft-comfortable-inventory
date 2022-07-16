@@ -62,7 +62,7 @@ namespace kohanis.ComfortableInventory.Patches
         private static void CommonPostfix(StateData? __state)
         {
             if (__state is StateData stateData)
-                Helpers.RefillSlotIfNeeded(stateData.slot, stateData.index, stateData.playerInventory);
+                PatchHelpers.RefillSlotIfNeeded(stateData.slot, stateData.index, stateData.playerInventory);
         }
 
         private static void Inventory_Prefix(Inventory __instance, out StateData? __state)
