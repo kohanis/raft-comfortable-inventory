@@ -25,7 +25,7 @@ namespace kohanis.ComfortableInventory.Patches
             var allSlots = inventory.allSlots;
             int index = 0,
                 end = allSlots.Count;
-            
+
             // from/to hotbar
             if (inventory.secondInventory == null && inventory is PlayerInventory playerInventory)
             {
@@ -34,7 +34,6 @@ namespace kohanis.ComfortableInventory.Patches
                     end = hotslotCount;
                 else
                     index = hotslotCount;
-                    
             }
 
             int uniqueIndex = __instance.itemInstance.UniqueIndex;
