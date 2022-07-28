@@ -42,9 +42,10 @@ namespace kohanis.ComfortableInventory.Patches
                     continue;
 
                 if (slot.IsEmpty)
-                    PlayerInventory_MoveSlotToEmpty(inventory, localSlot, slot, slotItemInstance.Amount);
+                    PlayerInventory_MoveSlotToEmpty(inventory,
+                        new object[] { localSlot, slot, slotItemInstance.Amount });
                 else
-                    PlayerInventory_SwitchSlots(inventory, localSlot, slot);
+                    PlayerInventory_SwitchSlots(inventory, new object[] { localSlot, slot });
                 break;
             }
         }
