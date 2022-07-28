@@ -19,12 +19,6 @@ namespace kohanis.ComfortableInventory.Patches
         internal static readonly FastInvokeHandler PlayerInventory_StackSlots =
             MethodInvoker.GetHandler(AccessTools.Method(typeof(PlayerInventory), "StackSlots"));
 
-
-        internal static bool IsSelectedHotbarSlot(Slot slot)
-        {
-            return Slot_inventory_Ref(slot) is PlayerInventory inventory && inventory.hotbar.IsSelectedHotSlot(slot);
-        }
-
         internal static void ReplenishSlotIfNeeded(Slot slot, int originalUniqueIndex,
             PlayerInventory playerInventory = null)
         {
@@ -40,7 +34,7 @@ namespace kohanis.ComfortableInventory.Patches
             {
                 var localSlot = allSlots[index];
 
-                if (localSlot.IsEmpty)
+                if (!localSlot.active || localSlot.IsEmpty)
                     continue;
 
                 var slotItemInstance = localSlot.itemInstance;
@@ -48,10 +42,9 @@ namespace kohanis.ComfortableInventory.Patches
                     continue;
 
                 if (slot.IsEmpty)
-                    PlayerInventory_MoveSlotToEmpty(inventory,
-                        new object[] { localSlot, slot, slotItemInstance.Amount });
+                    PlayerInventory_MoveSlotToEmpty(inventory, localSlot, slot, slotItemInstance.Amount);
                 else
-                    PlayerInventory_SwitchSlots(inventory, new object[] { localSlot, slot });
+                    PlayerInventory_SwitchSlots(inventory, localSlot, slot);
                 break;
             }
         }

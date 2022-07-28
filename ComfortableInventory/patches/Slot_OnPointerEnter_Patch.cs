@@ -12,16 +12,15 @@ namespace kohanis.ComfortableInventory.Patches
     [HarmonyPatch(typeof(Slot), "OnPointerEnter")]
     internal class Slot_OnPointerEnter_Patch
     {
-        private static void Prefix(Slot __instance, PointerEventData eventData)
+        private static void Prefix(Slot __instance, PointerEventData eventData, Inventory ___inventory)
         {
             if (__instance.IsEmpty || !eventData.eligibleForClick)
                 return;
 
-            var inventory = PatchHelpers.Slot_inventory_Ref(__instance);
-
             if (MyInput.GetButton("Drop"))
             {
-                var playerInventory = inventory as PlayerInventory ?? inventory.secondInventory as PlayerInventory;
+                var playerInventory =
+                    ___inventory as PlayerInventory ?? ___inventory.secondInventory as PlayerInventory;
                 if (playerInventory != null)
                 {
                     playerInventory.DropItem(__instance);
@@ -30,7 +29,7 @@ namespace kohanis.ComfortableInventory.Patches
             }
 
             if (Input.GetKey(KeyCode.LeftShift))
-                inventory.ShiftMoveItem(__instance, eventData);
+                ___inventory.ShiftMoveItem(__instance, eventData);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace kohanis.ComfortableInventory.Patches
             if (__state == -1 || !(__instance is PlayerInventory playerInventory))
                 return;
 
-            PatchHelpers.ReplenishSlotIfNeeded(playerInventory.GetSelectedHotbarSlot(), __state);
+            PatchHelpers.ReplenishSlotIfNeeded(playerInventory.GetSelectedHotbarSlot(), __state, playerInventory);
         }
     }
 }

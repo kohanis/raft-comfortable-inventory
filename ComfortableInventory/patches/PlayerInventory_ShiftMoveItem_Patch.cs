@@ -49,6 +49,9 @@ namespace kohanis.ComfortableInventory.Patches
             {
                 var iterSlot = allSlots[index];
 
+                if (!iterSlot.active)
+                    continue;
+
                 if (firstEmptySlot == null && iterSlot.IsEmpty)
                 {
                     firstEmptySlot = iterSlot;
@@ -56,10 +59,7 @@ namespace kohanis.ComfortableInventory.Patches
                 }
 
                 if (iterSlot.itemInstance?.UniqueIndex == uniqueIndex && !iterSlot.StackIsFull())
-                    PatchHelpers.PlayerInventory_StackSlots(inventory, new object[]
-                    {
-                        slot, iterSlot, item.Amount
-                    });
+                    PatchHelpers.PlayerInventory_StackSlots(inventory, slot, iterSlot, item.Amount);
 
                 item = slot.itemInstance;
                 if (item == null)
@@ -67,10 +67,7 @@ namespace kohanis.ComfortableInventory.Patches
             }
 
             if (item != null && firstEmptySlot != null)
-                PatchHelpers.PlayerInventory_MoveSlotToEmpty(inventory, new object[]
-                {
-                    slot, firstEmptySlot, item.Amount
-                });
+                PatchHelpers.PlayerInventory_MoveSlotToEmpty(inventory, slot, firstEmptySlot, item.Amount);
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,

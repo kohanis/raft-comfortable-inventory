@@ -12,22 +12,20 @@ namespace kohanis.ComfortableInventory.Patches
     [HarmonyPatch(typeof(Slot), "OnPointerDown")]
     internal class Slot_OnPointerDown_Patch
     {
-        private static bool Prefix(Slot __instance, PointerEventData eventData)
+        private static bool Prefix(Slot __instance, PointerEventData eventData, Inventory ___inventory)
         {
             if (__instance.IsEmpty || !(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl)))
                 return true;
 
-            var inventory = PatchHelpers.Slot_inventory_Ref(__instance);
-
-            if (inventory.secondInventory is Inventory_ResearchTable)
+            if (___inventory.secondInventory is Inventory_ResearchTable)
                 return true;
 
-            var allSlots = inventory.allSlots;
+            var allSlots = ___inventory.allSlots;
             int index = 0,
                 end = allSlots.Count;
 
             // from/to hotbar
-            if (inventory.secondInventory == null && inventory is PlayerInventory playerInventory)
+            if (___inventory.secondInventory == null && ___inventory is PlayerInventory playerInventory)
             {
                 int hotslotCount = playerInventory.hotslotCount;
                 if (playerInventory.hotbar.ContainsSlot(__instance))
@@ -44,7 +42,7 @@ namespace kohanis.ComfortableInventory.Patches
                 if (slot.itemInstance?.UniqueIndex != uniqueIndex)
                     continue;
 
-                inventory.ShiftMoveItem(slot, eventData);
+                ___inventory.ShiftMoveItem(slot, eventData);
 
                 if (slot.itemInstance != null)
                     break;
