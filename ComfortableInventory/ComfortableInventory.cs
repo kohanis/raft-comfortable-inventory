@@ -25,6 +25,23 @@ namespace kohanis.ComfortableInventory
             Log("Mod has been unloaded!");
         }
 
+        [ConsoleCommand("fixBackpack", "fixes backpack glitch when items are in inactive slots.")]
+        public static void fixBackpack()
+        {
+            var inv = RAPI.GetLocalPlayer()?.Inventory;
+            if (inv is null)
+            {
+                Log("this command can only be used with loaded player");
+                return;
+            }
+
+            foreach (var slot in inv.allSlots)
+            {
+                if (!slot.active && !slot.IsEmpty)
+                    inv.DropItem(slot);
+            }
+        }
+
         internal static void Log(string message)
         {
             Debug.Log($"{LogPrefix}: {message}");
