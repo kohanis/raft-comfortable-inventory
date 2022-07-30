@@ -29,11 +29,17 @@ namespace kohanis.ComfortableInventory.Patches
         internal static void RemoveItemReplacement(Slot slot, int amount, PlayerInventory instance)
         {
             // already empty-checked in originals
-            int index = slot.itemInstance.UniqueIndex;
+            var item = slot.itemInstance;
+            int index = item.UniqueIndex;
+
+            // No need to refill empty water holders
+            var consumable = item.settings_consumeable;
+            bool skip = consumable.FoodForm == FoodForm.Fluid && consumable.FoodType == FoodType.None;
 
             slot.RemoveItem(amount);
 
-            PatchHelpers.ReplenishSlotIfNeeded(slot, index, instance);
+            if (!skip)
+                PatchHelpers.ReplenishSlotIfNeeded(slot, index, instance);
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
