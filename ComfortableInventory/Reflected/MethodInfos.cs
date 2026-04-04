@@ -8,12 +8,6 @@ namespace kohanis.ComfortableInventory.Reflected
 {
     internal static class MethodInfos
     {
-        public static readonly MethodInfo Nullable__Bool__HasValue__Getter =
-            AccessTools.PropertyGetter(typeof(bool?), nameof(System.Nullable<bool>.HasValue));
-
-        public static readonly MethodInfo Nullable__Bool__GetValueOrDefault =
-            AccessTools.Method(typeof(bool?), nameof(System.Nullable<bool>.GetValueOrDefault));
-
         public static readonly MethodInfo Inventory__RemoveItemUses =
             AccessTools.Method(typeof(Inventory), nameof(Inventory.RemoveItemUses));
 
@@ -43,8 +37,5 @@ namespace kohanis.ComfortableInventory.Reflected
 
         public static readonly MethodInfo Tank__ModifyTank =
             AccessTools.Method(typeof(Tank), nameof(Tank.ModifyTank));
-        
-        public static readonly MethodInfo UnityEngine_Object__op_Inequality =
-            AccessTools.Method(typeof(UnityEngine.Object), "op_Inequality");
     }
 }

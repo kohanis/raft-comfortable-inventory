@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using kohanis.ComfortableInventory.Reflected;
 
@@ -14,41 +15,29 @@ namespace kohanis.ComfortableInventory.Patches
     [HarmonyPatch(typeof(Inventory), "SwitchSlots")]
     internal static class Inventory__SwitchSlots__Patch
     {
-        private static readonly MethodInfo CustomCheck_MethodInfo =
-            AccessTools.Method(typeof(Inventory__SwitchSlots__Patch), nameof(CustomCheck));
-
-        private static bool? CustomCheck(bool swapNeeded, Slot slot, Slot equipSlot)
+        private static readonly MethodInfo ShouldDenySwapPatch_MethodInfo =
+            AccessTools.Method(typeof(Inventory__SwitchSlots__Patch), nameof(ShouldDenySwapPatch));
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static EquipSlotType ShouldDenySwapPatch(EquipSlotType origTag, Slot fromSlot, Slot toSlot)
         {
-            if (swapNeeded)
-                (slot, equipSlot) = (equipSlot, slot);
+            var fromSlotEquipType = fromSlot.itemInstance.settings_equipment.EquipType;
+            var toSlotEquipType = toSlot.itemInstance.settings_equipment.EquipType;
 
-            var slotEquipType = slot.itemInstance.settings_equipment.EquipType;
-            var equipSlotEquipType = equipSlot.itemInstance.settings_equipment.EquipType;
+            if (fromSlotEquipType == EquipSlotType.Backpack || toSlotEquipType == EquipSlotType.Backpack)
+                return EquipSlotType.Backpack;
 
-            if (slotEquipType == EquipSlotType.Backpack || equipSlotEquipType == EquipSlotType.Backpack)
-                return true;
+            if (fromSlotEquipType == toSlotEquipType)
+                return EquipSlotType.None;
 
-            if (slotEquipType == equipSlotEquipType)
-                return false;
-
-            return null;
+            return origTag;
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
-            ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var codeMatcher = new CodeMatcher(instructions, generator)
+            var codeMatcher = new CodeMatcher(instructions)
                 .MatchStartForward(
-                    new CodeMatch(OpCodes.Brfalse_S),
-                    new CodeMatch(OpCodes.Ldarg_1),
-                    new CodeMatch(OpCodes.Br_S),
-                    new CodeMatch(OpCodes.Ldarg_2),
-                    new CodeMatch(OpCodes.Ldfld),
-                    new CodeMatch(OpCodes.Ldfld),
-                    new CodeMatch(OpCodes.Callvirt),
-                    new CodeMatch(OpCodes.Call, MethodInfos.Slot_Equip__GetEquipSlotWithTag),
-                    new CodeMatch(OpCodes.Ldnull),
-                    new CodeMatch(OpCodes.Call, MethodInfos.UnityEngine_Object__op_Inequality)
+                    new CodeMatch(OpCodes.Call, MethodInfos.Slot_Equip__GetEquipSlotWithTag)
                 );
 
             if (codeMatcher.IsInvalid)
@@ -57,24 +46,11 @@ namespace kohanis.ComfortableInventory.Patches
                 return null;
             }
 
-            var localVar = generator.DeclareLocal(typeof(bool?));
-
             return codeMatcher
-                .CreateLabelWithOffsets(10, out var longJump)
-                .CreateLabel(out var shortJump)
                 .Insert(
-                    new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Ldarg_2),
-                    new CodeInstruction(OpCodes.Call, CustomCheck_MethodInfo),
-                    new CodeInstruction(OpCodes.Stloc, localVar),
-                    new CodeInstruction(OpCodes.Ldloca, localVar),
-                    new CodeInstruction(OpCodes.Call, MethodInfos.Nullable__Bool__HasValue__Getter),
-                    new CodeInstruction(OpCodes.Brfalse_S, shortJump),
-                    new CodeInstruction(OpCodes.Pop),
-                    new CodeInstruction(OpCodes.Ldloca, localVar),
-                    new CodeInstruction(OpCodes.Call, MethodInfos.Nullable__Bool__GetValueOrDefault),
-                    new CodeInstruction(OpCodes.Br, longJump)
+                    new CodeInstruction(OpCodes.Call, ShouldDenySwapPatch_MethodInfo)
                 )
                 .Instructions();
         }

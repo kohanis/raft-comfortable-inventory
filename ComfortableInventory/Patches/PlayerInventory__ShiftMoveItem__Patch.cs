@@ -35,22 +35,13 @@ namespace kohanis.ComfortableInventory.Patches
                 return null;
             }
 
-            var endLabel = (Label)codeMatcher.Operand;
+            var branchEndLabel = (Label)codeMatcher.Operand;
 
             codeMatcher
                 .Advance(1)
-                .CreateLabel(out var shortLabel)
-                .Insert(
-                    new CodeInstruction(OpCodes.Br, shortLabel),
-                    new CodeInstruction(OpCodes.Ldarg_1),
-                    new CodeInstruction(OpCodes.Callvirt, MethodInfos.Slot__IsEmpty__Getter),
-                    new CodeInstruction(OpCodes.Brfalse_S, shortLabel),
-                    new CodeInstruction(OpCodes.Ret)
-                )
-                .Advance(1)
-                .CreateLabel(out var longLabel)
+                .CreateLabel(out var loopLabel)
                 .Advance(5)
-                .SearchForward(ins => ins.labels.Contains(endLabel));
+                .SearchForward(ins => ins.labels.Contains(branchEndLabel));
             
             if (codeMatcher.IsInvalid)
             {
@@ -58,7 +49,7 @@ namespace kohanis.ComfortableInventory.Patches
                 return null;
             }
 
-            codeMatcher.MatchStartBackwards(
+            codeMatcher.MatchEndBackwards(
                 new CodeMatch(OpCodes.Callvirt, MethodInfos.Inventory__StackSlots),
                 new CodeMatch(OpCodes.Ret)
             );
@@ -70,9 +61,12 @@ namespace kohanis.ComfortableInventory.Patches
             }
             
             codeMatcher
-                .Advance(1)
-                .Set(OpCodes.Br, longLabel)
-                .MatchStartBackwards(
+                .Insert(
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Callvirt, MethodInfos.Slot__IsEmpty__Getter),
+                    new CodeInstruction(OpCodes.Brfalse, loopLabel)
+                )
+                .MatchEndBackwards(
                     new CodeMatch(OpCodes.Callvirt, MethodInfos.Inventory__MoveSlotToEmpty),
                     new CodeMatch(OpCodes.Ret)
                 );
@@ -84,8 +78,11 @@ namespace kohanis.ComfortableInventory.Patches
             }
 
             return codeMatcher
-                .Advance(1)
-                .Set(OpCodes.Br, longLabel)
+                .Insert(
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Callvirt, MethodInfos.Slot__IsEmpty__Getter),
+                    new CodeInstruction(OpCodes.Brfalse, loopLabel)
+                )
                 .Instructions();
         }
     }
