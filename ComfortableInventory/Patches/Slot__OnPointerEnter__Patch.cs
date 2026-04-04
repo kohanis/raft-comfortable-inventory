@@ -25,7 +25,7 @@ namespace kohanis.ComfortableInventory.Patches
             }
             else if (Input.GetKey(KeyCode.LeftShift))
             {
-                ___inventory.ShiftMoveItem(__instance, eventData);
+                ___inventory.ShiftMoveItem(__instance);
             }
         }
     }

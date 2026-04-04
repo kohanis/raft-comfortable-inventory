@@ -43,7 +43,7 @@ namespace kohanis.ComfortableInventory.Patches
                 if (slot.itemInstance?.UniqueIndex != uniqueIndex)
                     continue;
 
-                ___inventory.ShiftMoveItem(slot, eventData);
+                ___inventory.ShiftMoveItem(slot);
 
                 if (slot.itemInstance != null)
                     break;
